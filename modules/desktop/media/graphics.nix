@@ -11,6 +11,7 @@ with lib;
 with lib.my;
 let cfg = config.modules.desktop.media.graphics;
     configDir = config.dotfiles.configDir;
+    system = config.system;
 in {
   options.modules.desktop.media.graphics = {
     enable         = mkBoolOpt false;
@@ -35,14 +36,14 @@ in {
 
       # Replaces photoshop
       (if cfg.raster.enable then [
-        krita
+        (mkIf (system == "x86_64-linux") krita)
         gimp
         gimpPlugins.resynthesizer  # content-aware scaling in gimp
       ] else []) ++
 
       # Sprite sheets & animation
       (if cfg.sprites.enable then [
-        aseprite-unfree
+        (mkIf (system == "x86_64-linux") aseprite-unfree)
       ] else []) ++
 
       # 3D modelling

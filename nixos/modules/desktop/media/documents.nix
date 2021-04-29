@@ -1,4 +1,4 @@
-# modules/desktop/media/docs.nix
+# nixos/modules/desktop/media/documents.nix
 
 { options, config, lib, pkgs, ... }:
 

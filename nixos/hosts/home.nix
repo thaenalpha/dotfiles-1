@@ -1,0 +1,1 @@
+/etc/dotfiles/hosts/home.nix

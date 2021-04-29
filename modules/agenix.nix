@@ -1,12 +1,13 @@
 # modules/agenix.nix -- encrypt secrets in nix store
 
-{ options, config, inputs, lib, pkgs, ... }:
+{ options, config, inputs, lib, ... }:
 
 with builtins;
 with lib;
 with lib.my;
 let inherit (inputs) agenix;
-    secretsDir = "${toString ../hosts}/${config.networking.hostName}/secrets";
+    secretsDir =
+      "${toString ../nixos/hosts}/${config.networking.hostName}/secrets";
     secretsFile = "${secretsDir}/secrets.nix";
 in {
   imports = [ agenix.nixosModules.age ];

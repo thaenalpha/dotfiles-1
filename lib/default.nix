@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }:
+{ inputs, lib, ... }:
 
 let
   inherit (lib) makeExtensible attrValues foldr;
@@ -10,9 +10,6 @@ let
   };
 
   mylib = makeExtensible (self:
-    with self; mapModules ./.
-      (file: import file { inherit self lib pkgs inputs; }));
+    with self; mapModules ./. (file: import file { inherit self lib inputs; }));
 in
-mylib.extend
-  (self: super:
-    foldr (a: b: a // b) {} (attrValues super))
+mylib.extend (_: super: foldr (a: b: a // b) {} (attrValues super))

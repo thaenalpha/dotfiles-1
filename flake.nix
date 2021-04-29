@@ -1,7 +1,8 @@
 # flake.nix --- the heart of my dotfiles
 #
-# Author:  Henrik Lissner <contact@henrik.io>
-# URL:     https://github.com/hlissner/dotfiles
+# Author:  Nopanun Laochunhanun <nopanun@pm.me> github.com/thaenalpha/dotfiles
+# Acknowledgements: Henrik Lissner, Seong Yong-ju
+# URLs: (gh hlissner/dotfiles sei40kr/dotfiles)
 # License: MIT
 #
 # Welcome to ground zero. Where the whole flake gets set up and all its modules
@@ -15,6 +16,12 @@
       # Core dependencies.
       nixpkgs.url = "nixpkgs/nixos-unstable";             # primary nixpkgs
       nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";  # for packages on the edge
+
+      darwin = {
+        url = "github:LnL7/nix-darwin/master";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
       home-manager.url = "github:rycee/home-manager/master";
       home-manager.inputs.nixpkgs.follows = "nixpkgs";
       agenix.url = "github:ryantm/agenix";
@@ -25,45 +32,97 @@
       nixos-hardware.url = "github:nixos/nixos-hardware";
     };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, darwin, ... }:
     let
-      inherit (lib.my) mapModules mapModulesRec mapHosts;
+      inherit (lib) attrValues elem filterAttrs genAttrs hasSuffix mkDefault
+        nixosSystem optionalAttrs removeSuffix;
+      inherit (darwin.lib) darwinSystem;
+      inherit (lib.my) mapModules mapModulesRec mapModulesRec';
 
-      system = "x86_64-linux";
+      lib = nixpkgs.lib.extend (lib: _: {
+        my = import ./lib { inherit inputs lib; };
+      });
 
-      mkPkgs = pkgs: extraOverlays: import pkgs {
+      systems = [ "aarch64-darwin" "x86_64-linux" ];
+
+      mkPkgs = pkgs: extraOverlays: system: import pkgs {
         inherit system;
         config.allowUnfree = true;  # forgive me Stallman senpai
-        overlays = extraOverlays ++ (lib.attrValues self.overlays);
+        overlays = extraOverlays ++ (attrValues self.overlays);
       };
-      pkgs  = mkPkgs nixpkgs [ self.overlay ];
-      pkgs' = mkPkgs nixpkgs-unstable [];
+      pkgs = genAttrs systems (mkPkgs nixpkgs [ self.overlay ]);
+      pkgs' = genAttrs systems (mkPkgs nixpkgs-unstable []);
 
-      lib = nixpkgs.lib.extend
-        (self: super: { my = import ./lib { inherit pkgs inputs; lib = self; }; });
-    in {
+      isLinux = hasSuffix "-linux";
+      isDarwin = hasSuffix "-darwin";
+      mkHost = path:
+        let
+          hostCfg = (import path) { inherit inputs lib pkgs'; };
+          inherit (hostCfg) system;
+
+          specialArgs = {
+            inherit inputs lib;
+            pkgs = pkgs.${system};
+          };
+          modules = [
+            {
+              networking.hostName = mkDefault
+                (removeSuffix ".nix" (baseNameOf path));
+            }
+            ./modules
+            (filterAttrs (n: _: !elem n [ "system" "stateVersion" ]) hostCfg)
+          ];
+        in
+        if isLinux system then
+          (nixosSystem {
+            inherit system specialArgs;
+            modules = modules ++ [
+              {
+                system = { inherit (hostCfg) stateVersion; };
+                home-manager.users.${hostCfg.user.name}.home = {
+                  inherit (hostCfg) stateVersion;
+                };
+              }
+              nixos/modules
+            ];
+          })
+        else if isDarwin system then
+          (darwinSystem {
+            inherit specialArgs;
+            modules = modules ++ [
+              {
+                home-manager.users.${hostCfg.user.name}.home = {
+                  inherit (hostCfg) stateVersion;
+                };
+              }
+              darwin/modules
+            ];
+          })
+        else abort "[mkHost] Unknown system architecture: ${system}";
+    in
+    {
       lib = lib.my;
 
-      overlay =
-        final: prev: {
-          unstable = pkgs';
-          my = self.packages."${system}";
-        };
+      overlay = _: { system, ... }:
+        { unstable = pkgs'.${system}; my = self.packages.${system}; };
 
-      overlays =
-        mapModules ./overlays import;
+      overlays = mapModules ./overlays import;
 
-      packages."${system}" =
-        mapModules ./packages (p: pkgs.callPackage p {});
+      packages = genAttrs systems (system: import ./packages {
+        pkgs = pkgs.${system};
+      });
 
-      nixosModules =
-        { dotfiles = import ./.; } // mapModulesRec ./modules import;
+      nixosModules = mapModulesRec ./modules import
+        // (mapModulesRec nixos/modules import);
+      nixosConfigurations = mapModules nixos/hosts mkHost;
 
-      nixosConfigurations =
-        mapHosts ./hosts {};
+      darwinModules = mapModulesRec ./modules import
+        // (mapModulesRec darwin/modules import);
+      darwinConfigurations = mapModules darwin/hosts mkHost;
 
-      devShell."${system}" =
-        import ./shell.nix { inherit pkgs; };
+      devShells = genAttrs systems (system: import ./shell.nix {
+        pkgs = pkgs.${system};
+      });
 
       templates = {
         full = {
@@ -73,9 +132,9 @@
       } // import ./templates;
       defaultTemplate = self.templates.full;
 
-      defaultApp."${system}" = {
+      defaultApp.x86_64-linux = {
         type = "app";
-        program = ./bin/hey;
+        program = bin/hey;
       };
     };
 }

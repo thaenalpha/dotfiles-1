@@ -1,4 +1,4 @@
-# modules/desktop/media/daw.nix
+# nixos/modules/desktop/media/daw.nix
 #
 # I make music for my games. LMMS is my DAW; or will be, once I've weened myself
 # off of Fruityloops. When I'm in the mood for a quicky I fire up sunvox

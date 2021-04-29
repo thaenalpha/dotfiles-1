@@ -1,7 +1,9 @@
-{ config, options, lib, home-manager, ... }:
+{ config, inputs, lib, options, pkgs, ... }:
 
 with lib;
 with lib.my;
+let inherit (pkgs.stdenv) isDarwin;
+in
 {
   options = with types; {
     user = mkOpt attrs {};
@@ -43,10 +45,6 @@ with lib.my;
       in {
         inherit name;
         description = "The primary user account";
-        extraGroups = [ "wheel" ];
-        isNormalUser = true;
-        home = "/home/${name}";
-        group = "users";
         uid = 1000;
       };
 
@@ -64,12 +62,7 @@ with lib.my;
       #   home.configFile  ->  home-manager.users.hlissner.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.hlissner.home.xdg.dataFile
       users.${config.user.name} = {
-        home = {
-          file = mkAliasDefinitions options.home.file;
-          # Necessary for home-manager to work with flakes, otherwise it will
-          # look for a nixpkgs channel.
-          stateVersion = config.system.stateVersion;
-        };
+        home.file = mkAliasDefinitions options.home.file;
         xdg = {
           configFile = mkAliasDefinitions options.home.configFile;
           dataFile   = mkAliasDefinitions options.home.dataFile;
@@ -78,11 +71,6 @@ with lib.my;
     };
 
     users.users.${config.user.name} = mkAliasDefinitions options.user;
-
-    nix.settings = let users = [ "root" config.user.name ]; in {
-      trusted-users = users;
-      allowed-users = users;
-    };
 
     # must already begin with pre-existing PATH. Also, can't use binDir here,
     # because it contains a nix store path.
