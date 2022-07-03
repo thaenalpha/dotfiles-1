@@ -33,6 +33,8 @@
     git-crypt
     gnupg
     pinentry_qt
+    cryptsetup # https://superuser.com/questions/376533/how-to-access-a-bitlocker-encrypted-drive-in-linux
+    libguestfs-with-appliance # guestmount --add ext4.vhdx --inspector --ro /mnt/wsl
   ];
 
   home.file = {
