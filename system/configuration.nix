@@ -133,14 +133,14 @@
   # List services that you want to enable:
   services = {
   #   Enable the OpenSSH daemon.
-  #   openssh.enable = true;
+    openssh.enable = true;
   #   Enable the Emacs daemon.
     emacs.enable = true;
     emacs.package = with pkgs; ((emacsPackagesFor emacs28NativeComp).emacsWithPackages (epkgs: [ epkgs.vterm ]));
     emacs.defaultEditor = true;
   };
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 22 80 8080 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
