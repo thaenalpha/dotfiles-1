@@ -17,7 +17,7 @@ in {
     tools.enable   = mkBoolOpt true;
     raster.enable  = mkBoolOpt true;
     vector.enable  = mkBoolOpt true;
-    sprites.enable = mkBoolOpt true;
+    sprites.enable = mkBoolOpt false;
     models.enable  = mkBoolOpt false;
   };
 
