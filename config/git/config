@@ -1,7 +1,7 @@
 [user]
-	name = Henrik Lissner
-	email = git@henrik.io
-	signingKey = FA1FADD9440B688CAA75A057B60957CA074D39A3
+	name = Nopanun Loachunhanun
+	email = nopanun@pm.me
+	signingKey = 5750461731047101
 [commit]
 	gpgSign = true
 [tag]
@@ -11,9 +11,9 @@
 [init]
 	defaultBranch = main
 [github]
-	user = hlissner
+	user = thaenalpha
 [gitlab]
-	user = hlissner
+	user = nlaochun
 [push]
 	autoSquash = true
 [push]
@@ -36,7 +36,7 @@
     insteadOf = gh:
 [url "git@github.com:"]
     insteadOf = ssh+gh:
-[url "git@github.com:hlissner/"]
+[url "git@github.com:thaenalpha/"]
     insteadOf = gh:/
 [url "https://gitlab.com/"]
     insteadOf = gl:
@@ -44,12 +44,14 @@
     insteadOf = gist:
 [url "https://bitbucket.org/"]
     insteadOf = bb:
-[url "https://git.henrik.io"]
-    insteadOf = my:
+# [url "https://git.henrik.io"]
+#     insteadOf = my:
 [diff "lisp"]
 	xfuncname = "^(((;;;+ )|\\(|([ \t]+\\(((cl-|el-patch-)?def(un|var|macro|method|custom)|gb/))).*)$"
 [diff "org"]
 	xfuncname = "^(\\*+ +.*)$"
+[diff "gpg"]
+	textconv = gpg --no-tty --decrypt
 [credential "https://github.com"]
 	helper =
 	helper = !gh auth git-credential
