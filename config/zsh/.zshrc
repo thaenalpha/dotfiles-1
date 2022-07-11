@@ -29,6 +29,7 @@ if ! zgenom saved; then
   zgenom load zsh-users/zsh-history-substring-search
   zgenom load romkatv/powerlevel10k powerlevel10k
   zgenom load hlissner/zsh-autopair autopair.zsh
+  zgenom load MichaelAquilina/zsh-you-should-use
 
   zgenom save
   zgenom compile $ZDOTDIR
