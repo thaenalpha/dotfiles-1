@@ -26,6 +26,8 @@ in {
         python37Packages.setuptools
         python37Packages.pylint
         python37Packages.poetry
+        python37Packages.epc    # emacs :tools lsp-bridge dependencies
+        python37Packages.normcap # OCR tool
       ];
 
       environment.shellAliases = {
