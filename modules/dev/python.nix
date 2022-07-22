@@ -14,6 +14,7 @@ in {
   options.modules.dev.python = {
     enable = mkBoolOpt false;
     xdg.enable = mkBoolOpt devCfg.xdg.enable;
+    conda.enable = mkBoolOpt false;
   };
 
   config = mkMerge [
@@ -49,6 +50,14 @@ in {
       env.PYTHONSTARTUP   = "$XDG_CONFIG_HOME/python/pythonrc";
       env.PYTHON_EGG_CACHE = "$XDG_CACHE_HOME/python-eggs";
       env.JUPYTER_CONFIG_DIR = "$XDG_CONFIG_HOME/jupyter";
+    })
+
+    (mkIf cfg.conda.enable {
+      user.packages = with pkgs; [ unstable.micromamba ];
+
+      env.MAMBA_ROOT_PREFIX = "$XDG_DATA_HOME/mamba";
+
+      environment.shellAliases = "micromamba";
     })
   ];
 }
