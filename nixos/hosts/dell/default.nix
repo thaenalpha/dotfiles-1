@@ -71,6 +71,7 @@ in
       onedrive.enable = true;
       ssh.enable = true;
       # teamviewer.enable = true;
+      transmission.enable = true;
     };
     theme.active = "alucard";
     i18n.thai.enable = true;
