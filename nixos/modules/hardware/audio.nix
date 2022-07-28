@@ -20,6 +20,7 @@ in {
 
     environment.systemPackages = with pkgs; [
       easyeffects
+      pavucontrol
     ];
 
     # HACK Prevents ~/.esd_auth files by disabling the esound protocol module
