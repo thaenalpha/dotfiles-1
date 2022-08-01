@@ -16,11 +16,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      user.packages = with pkgs; [
-        clojure
-        joker
-        leiningen
-      ];
+      user.packages = with pkgs; [ clojure clojure-lsp clj-kondo leiningen ];
     })
 
     (mkIf cfg.xdg.enable {
