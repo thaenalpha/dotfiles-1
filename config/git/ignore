@@ -27,7 +27,7 @@ Icon?
 .sass-cache/
 __pycache__/
 
-# Compiled thangs #
+# Compiled things #
 ###################
 *.class
 *.exe
