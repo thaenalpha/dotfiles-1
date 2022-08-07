@@ -87,6 +87,10 @@ in {
       # :lang sh
       shellcheck
       unstable.shfmt
+      # :lang web +lsp
+      unstable.nodePackages.js-beautify
+      unstable.nodePackages.stylelint
+      html-tidy
       # :lang yanl +lsp
       nodePackages.yaml-language-server
     ];
