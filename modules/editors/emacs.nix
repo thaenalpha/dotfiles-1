@@ -50,7 +50,7 @@ in {
       # :tools editorconfig
       editorconfig-core-c # per-project style config
       # :tools lookup & :lang org +roam
-      sqlite
+      unstable.sqlite
       # :tools pass
       zbar                # Bar code reader
       qrencode            # QR code encoder
@@ -60,9 +60,9 @@ in {
       beancount
       unstable.fava  # HACK Momentarily broken on nixos-unstable
       # :lang javascript +lsp
-      nodePackages.typescript-language-server
-      nodePackages.typescript
-      nodePackages.prettier
+      unstable.nodePackages.typescript-language-server
+      unstable.nodePackages.typescript
+      unstable.nodePackages.prettier
       # :lang nix
       nixfmt
       # :lang markdown +grip, org +jupyter +roam
@@ -82,7 +82,7 @@ in {
       # :lang python +lsp
       unstable.nodePackages.pyright
       # :lang rust +lsp
-      rustfmt
+      unstable.rustfmt
       unstable.rust-analyzer
       # :lang sh
       shellcheck
@@ -92,7 +92,7 @@ in {
       unstable.nodePackages.stylelint
       html-tidy
       # :lang yanl +lsp
-      nodePackages.yaml-language-server
+      unstable.nodePackages.yaml-language-server
     ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
