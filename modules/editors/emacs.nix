@@ -39,6 +39,7 @@ in {
         pinentry_emacs)   # in-emacs gnupg prompts
       zstd                # for undo-fu-session/undo-tree compression
       wmctrl              # for orca raise-frame
+      dtach               # for dtache
 
       ## Module dependencies
       # :app telega
