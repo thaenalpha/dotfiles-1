@@ -34,8 +34,9 @@
 
   outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, darwin, ... }:
     let
-      inherit (lib) attrValues elem filterAttrs genAttrs hasSuffix mkDefault
-        nixosSystem optionalAttrs removeSuffix;
+      inherit (builtins) removeAttrs;
+      inherit (lib) attrValues elem genAttrs hasSuffix mkDefault nixosSystem
+        optionalAttrs removeSuffix;
       inherit (darwin.lib) darwinSystem;
       inherit (lib.my) mapModules mapModulesRec mapModulesRec';
 
@@ -70,7 +71,7 @@
                 (removeSuffix ".nix" (baseNameOf path));
             }
             ./modules
-            (filterAttrs (n: _: !elem n [ "system" "stateVersion" ]) hostCfg)
+            (removeAttrs hostCfg [ "system" "stateVersion" ])
           ];
         in
         if isLinux system then
