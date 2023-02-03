@@ -22,7 +22,7 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
-      home-manager.url = "github:rycee/home-manager/master";
+      home-manager.url = "github:nix-community/home-manager/master";
       home-manager.inputs.nixpkgs.follows = "nixpkgs";
       agenix.url = "github:ryantm/agenix";
       agenix.inputs.nixpkgs.follows = "nixpkgs";
