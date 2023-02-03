@@ -1,1 +1,11 @@
 result
+*.el
+*.elc
+*.eln
+*.eln.*
+*.html
+docs/static
+docs/public
+docs/content
+docs/resources/_gen
+docs/.hugo_build.lock
