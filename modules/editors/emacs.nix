@@ -64,8 +64,8 @@ in {
       unstable.nodePackages.typescript-language-server
       unstable.nodePackages.typescript
       unstable.nodePackages.prettier
-      # :lang nix
-      nixfmt
+      # :lang nix +lsp
+      nixfmt rnix-lsp
       # :lang markdown +grip, org +jupyter +roam
       pandoc
       scrot               # for screenshoting
