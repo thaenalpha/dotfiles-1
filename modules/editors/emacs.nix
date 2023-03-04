@@ -73,7 +73,7 @@ in {
       (python3.withPackages (ps: with ps; [ grip jupyter ]))
       graphviz            # for graphviz-dot-mode
       (makeDesktopItem {
-        name = "Org-Protocol";
+        name = "org-protocol";
         desktopName = "Org-Protocol";
         exec = "emacsclient %u";
         icon = "emacs";
