@@ -7,7 +7,7 @@ let hwCfg = config.modules.hardware;
 in {
   options.modules.hardware.bluetooth = {
     enable = mkBoolOpt false;
-    blueman.enable = mkBoolOpt true;
+    blueman.enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
