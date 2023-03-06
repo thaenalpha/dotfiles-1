@@ -7,6 +7,7 @@ let cfg = config.modules.desktop.xfce4;
 in {
   options.modules.desktop.xfce4 = {
     enable = mkBoolOpt false;
+    withLightdm = mkBoolOpt true;
   };
 
   config = mkIf cfg.enable {
@@ -22,8 +23,10 @@ in {
         };
         displayManager = {
           defaultSession = "xfce";
-          # lightdm.enable = true;
-          # lightdm.greeters.mini.enable = true;
+          lightdm = mkIf cfg.withLightdm {
+            enable = true;
+            greeters.mini.enable = true;
+          };
 
           # Enable automatic login for the user.
           # autoLogin.enable = true;
