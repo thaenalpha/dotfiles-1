@@ -27,4 +27,9 @@ in {
 
   # So the vaultwarden CLI knows where to find my server.
   modules.shell.vaultwarden.config.server = "bitwarden.com";
+
+  ## Home Manager Modules
+  home.extraOptions = {
+    services.dropbox.enable = true; # dropbox-cli
+  };
 }
