@@ -8,6 +8,7 @@ in {
   options.modules.desktop.xfce4 = {
     enable = mkBoolOpt false;
     withLightdm = mkBoolOpt true;
+    autoLogin = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
@@ -29,8 +30,10 @@ in {
           };
 
           # Enable automatic login for the user.
-          # autoLogin.enable = true;
-          # autoLogin.user = "${config.user.name}";
+          autoLogin = mkIf cfg.autoLogin {
+            enable = true;
+            user = "${config.user.name}";
+          };
         };
       };
     };
