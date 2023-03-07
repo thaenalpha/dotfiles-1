@@ -3,7 +3,6 @@
 with lib;
 with lib.my;
 let cfg = config.modules.desktop.xfce4;
-    configDir = config.dotfiles.configDir;
 in {
   options.modules.desktop.xfce4 = {
     enable = mkBoolOpt false;
