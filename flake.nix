@@ -14,8 +14,8 @@
   inputs = 
     {
       # Core dependencies.
-      nixpkgs.url = "nixpkgs/nixos-unstable";             # primary nixpkgs
-      nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";  # for packages on the edge
+      nixpkgs.url = "nixpkgs/nixos-unstable";  # primary nixpkgs
+      nixpkgs-unstable.url = "nixpkgs/master"; # for packages on the edge
 
       darwin = {
         url = "github:LnL7/nix-darwin/master";
